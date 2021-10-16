@@ -1,0 +1,6 @@
+C:\Users\danie\source\repos\ScytherEncryption\Executables\ScytherEncryption\bin\Debug\ScytherEncryption.exe.config
+C:\Users\danie\source\repos\ScytherEncryption\Executables\ScytherEncryption\bin\Debug\ScytherEncryption.exe
+C:\Users\danie\source\repos\ScytherEncryption\Executables\ScytherEncryption\bin\Debug\ScytherEncryption.pdb
+C:\Users\danie\source\repos\ScytherEncryption\Executables\ScytherEncryption\obj\Debug\ScytherEncryption.csproj.CoreCompileInputs.cache
+C:\Users\danie\source\repos\ScytherEncryption\Executables\ScytherEncryption\obj\Debug\ScytherEncryption.exe
+C:\Users\danie\source\repos\ScytherEncryption\Executables\ScytherEncryption\obj\Debug\ScytherEncryption.pdb
