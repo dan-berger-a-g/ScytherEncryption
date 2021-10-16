@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScytherEncryption", "Executables\ScytherEncryption\ScytherEncryption.csproj", "{66F85A85-D0DE-4373-8D55-F03B053161CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScytherEncryptionTests", "AutomatedTests\ScytherEncryptionTests\ScytherEncryptionTests.csproj", "{76148DF9-B21E-4134-ABE7-84F6733441F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AutomatedTests", "AutomatedTests", "{FF196596-FED4-45D9-BDEC-6E5FF6946D36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Executables", "Executables", "{28007911-25C7-4860-8F8E-3DCBCBBFA269}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,17 @@ Global
 		{66F85A85-D0DE-4373-8D55-F03B053161CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66F85A85-D0DE-4373-8D55-F03B053161CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66F85A85-D0DE-4373-8D55-F03B053161CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76148DF9-B21E-4134-ABE7-84F6733441F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76148DF9-B21E-4134-ABE7-84F6733441F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76148DF9-B21E-4134-ABE7-84F6733441F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76148DF9-B21E-4134-ABE7-84F6733441F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{66F85A85-D0DE-4373-8D55-F03B053161CA} = {28007911-25C7-4860-8F8E-3DCBCBBFA269}
+		{76148DF9-B21E-4134-ABE7-84F6733441F3} = {FF196596-FED4-45D9-BDEC-6E5FF6946D36}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F4EDE6C-6F46-445D-B812-73C8EC10EB72}
