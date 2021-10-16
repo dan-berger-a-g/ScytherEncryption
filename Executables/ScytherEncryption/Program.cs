@@ -15,12 +15,24 @@ namespace ScytherEncryption
 
             string userFile = Console.ReadLine().Trim().Replace("\"", "");
 
-            string contents = File.ReadAllText(userFile);
-            Console.WriteLine("\r\nFile contents:");
-            Console.WriteLine(contents);
+            while (!File.Exists(userFile))
+            {
+                Console.WriteLine("File \"{0}\" not found", userFile);
+                Console.WriteLine("Select a file to encrypt:");
+                userFile = Console.ReadLine().Trim().Replace("\"", "");
+            }
+
+            PrintFile(userFile);
 
             Console.WriteLine("\r\nPress enter to exit...");
             Console.ReadLine();
         }
+
+        static void PrintFile(string filePath)
+        {
+            string contents = File.ReadAllText(filePath);
+            Console.WriteLine("\r\nFile contents:");
+            Console.WriteLine(contents);
+        } 
     }
 }
