@@ -20,6 +20,7 @@ namespace ScytherEncryption
         [Test]
         public void TestEncryption()
         {
+            // comment from github
             string s = "Hello, world!" + Environment.NewLine + "foo line";
             byte[] key = new byte[] { 1, 2, 3 };
 
