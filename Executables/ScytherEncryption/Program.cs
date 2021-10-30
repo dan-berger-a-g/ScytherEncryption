@@ -15,8 +15,11 @@ namespace ScytherEncryption
             // These are variables that we will need later
             string userFile;
             string keyFile;
+            string volumeLabel;
+            string errorMessage;
             byte[] fileContents;
             byte[] key;
+            DriveInfo usb;
 
             // This object handles creating new keys, reading keys from a file, or writing keys to a file
             var keyGenerator = new KeyGenerator();
@@ -24,51 +27,89 @@ namespace ScytherEncryption
             // This object handles encrypting and decrypting files using a key
             var encryptor = new Encryption();
 
-            Console.WriteLine("Enter a command:"); // Ask the user to enter a command
-            UserCommand cmd = GetUserCommand(); // parse their input into a UserCommand enum
+            // This object handles operations with removable drives
+            var driveHelper = new Usb();
+
+            UserCommand cmd = UserCommand.Help;
 
             // Until the user quits, keep asking for the next command, and process it
             while (cmd != UserCommand.Quit)
             {
+                // cmd = GetUserCommand(); // parse their input into a UserCommand enum
+
                 switch (cmd)
                 {
                     case UserCommand.Encrypt:
                         userFile = GetUserFile("Enter the path to the file to encrypt", ".txt", true);
-                        keyFile = GetUserFile("Enter the path to the encryption key", ".key", true);
-                        if (encryptor.EncryptFile(userFile, keyFile, out string encryptedFile, out string errorMessage))
+                        if (GetUsb(out volumeLabel, out usb))
                         {
-                            Console.WriteLine("Successfully encrypted file, new file path: " + encryptedFile);
+                            keyFile = driveHelper.GetKeyPath(usb);
+                            if (encryptor.EncryptFile(userFile, keyFile, out var encryptedFile, out errorMessage))
+                            {
+                                Console.WriteLine("Successfully encrypted file, new file path: " + encryptedFile);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unable to encrypt file: " + errorMessage);
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Unable to encrypt file: " + errorMessage);
+                            Console.WriteLine("Could not find valid removable drive with volume label: \"{0}\"", volumeLabel);
                         }
                         break;
                     case UserCommand.Decrypt:
                         userFile = GetUserFile("Enter the path to the .encrypted file to decrypt", ".encrypted", true);
-                        keyFile = GetUserFile("Enter the path to the encryption key", ".key", true);
-                        if (encryptor.DecryptFile(userFile, keyFile, out string decryptedFile, out errorMessage))
+                        if (GetUsb(out volumeLabel, out usb))
                         {
-                            Console.WriteLine("Successfully decrypted file, new file path: " + decryptedFile);
+                            keyFile = driveHelper.GetKeyPath(usb);
+                            if (encryptor.DecryptFile(userFile, keyFile, out string decryptedFile, out errorMessage))
+                            {
+                                Console.WriteLine("Successfully decrypted file, new file path: " + decryptedFile);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unable to decrypt file: " + errorMessage);
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Unable to decrypt file: " + errorMessage);
+                            Console.WriteLine("Could not find valid removable drive with volume label: \"{0}\"", volumeLabel);
                         }
                         break;
                     case UserCommand.Help:
                         PrintHelp();
                         break;
                     case UserCommand.GenerateKey:
-                        string filePath = GetUserFile("Enter the path to the key file", ".key", false);
-                        key = keyGenerator.Generate();
-                        if (keyGenerator.WriteToFile(key, filePath, out errorMessage))
+                        if (GetUsb(out volumeLabel, out usb))
                         {
-                            Console.WriteLine("Key successfully generated at \"{0}\"", filePath);
+                            string filePath = driveHelper.GetKeyPath(usb);
+
+                            if (File.Exists(filePath))
+                            {
+                                Console.WriteLine("Drive already contains a key. If you proceed, any files encrypted with that key will be permanently lost.");
+                                Console.WriteLine("Type Y to proceeed, any other character to cancel:");
+
+                                var userChar = Console.ReadLine();
+                                if (userChar.ToLower() != "y")
+                                {
+                                    break;
+                                }
+                            }
+
+                            key = keyGenerator.Generate();
+                            if (keyGenerator.WriteToFile(key, filePath, out errorMessage))
+                            {
+                                Console.WriteLine("Key successfully generated at \"{0}\"", filePath);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unable to generate key: " + errorMessage);
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Unable to generate key: " + errorMessage);
+                            Console.WriteLine("Could not find valid removable drive with volume label: \"{0}\"", volumeLabel);
                         }
                         break;
                     case UserCommand.Unknown:
@@ -76,8 +117,8 @@ namespace ScytherEncryption
                         break;
                 }
 
-                Console.WriteLine("Enter a command:");
-                cmd = GetUserCommand();
+                Console.WriteLine("Enter a command:"); // Ask the user to enter a command
+                cmd = GetUserCommand(); // parse their input into a UserCommand enum
             }
         }
 
@@ -135,6 +176,15 @@ namespace ScytherEncryption
             }
 
            return userFile;
+        }
+
+        static bool GetUsb(out string volumeLabel, out DriveInfo drive)
+        {
+            Console.WriteLine("Enter USB drive VolumeLabel:");
+            volumeLabel = Console.ReadLine().Trim();
+
+            var driveHelper = new Usb();
+            return driveHelper.FindRemovableDrive(volumeLabel, out drive);
         }
     }
 }

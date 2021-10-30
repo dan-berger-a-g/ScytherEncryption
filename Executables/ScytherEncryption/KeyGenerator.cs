@@ -10,6 +10,8 @@ namespace ScytherEncryption
     public class KeyGenerator
     {
 
+        public const string KEY_NAME = ".scytherKey";
+
         /// <summary>
         /// Reads the contents of an encryption key file as bytes
         /// </summary>
