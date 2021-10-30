@@ -15,31 +15,45 @@ namespace ScytherEncryption
         /// <param name="contents"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string Encypt(string plainText, byte key)
+        public string Encypt(string plainText, byte[] key)
         {
+            //Allows the encryption to be able to understand what to encrypt, which is text
             byte[] originalBytes = Encoding.UTF8.GetBytes(plainText);
+            //tells the encryption to offset the text by a set length
             byte[] encryptedBytes = new byte[originalBytes.Length];
 
-            for (int i = 0; i < originalBytes.Length; i++)
+            //Establishes length by offseting the text by one until it is offest by the right number
+            for (int i = 0; i < originalBytes.Length;  i++)
             {
-                encryptedBytes[i] = (byte) (originalBytes[i] + key);
+                // old way
+                // encryptedBytes[i] = (byte)(originalBytes[i] + key[0]);
+
+                // new way
+                encryptedBytes[i] = (byte)(originalBytes[i] + key[i % key.Length]);
             }
 
             return Encoding.UTF8.GetString(encryptedBytes);
         }
 
 
-        public string Decrypt(string encryptedString, byte key)
+        public string Decrypt(string encryptedString, byte[] key)
         {
+            //Everything above but reversed
             byte[] encryptedBytes = Encoding.UTF8.GetBytes(encryptedString);
             byte[] plainBytes = new byte[encryptedBytes.Length];
 
-            for (int i = 0; i < encryptedBytes.Length;i++)
+            for (int i = 0; i < encryptedBytes.Length; i++)
             {
-                plainBytes[i] = (byte) (encryptedBytes[i] - 7);
+                // old way
+                // plainBytes[i] = (byte)(encryptedBytes[i] - key[0]);
+
+                // new way
+                plainBytes[i] = (byte)(encryptedBytes[i] - key[i % key.Length]);
             }
 
             return Encoding.UTF8.GetString(plainBytes);
         }
     }
 }
+
+

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScytherEncryption
 {
+    //Establish commands that the user can use
     enum UserCommand
     {
         Unknown,
@@ -18,17 +19,25 @@ namespace ScytherEncryption
 
     class Program
     {
-        const int KEY = 7;
+
+
 
         static void Main(string[] args)
         {
+            //Generate key and implement that generated key
+            var keyGenerator = new KeyGenerator();
+            byte[] KEY = keyGenerator.Generate();
+       
+            //Tell console to read the user's command from above
             Console.WriteLine("Enter a command:");
             UserCommand cmd = GetUserCommand();
 
+            //Tell encryption what text to encrypt
             var encryptor = new Encryption();
             string userFile;
             string fileContents;
 
+            //Tells the console what to do in the case of each of the user's commands
             while (cmd != UserCommand.Quit)
             {
                 switch (cmd)
@@ -40,6 +49,7 @@ namespace ScytherEncryption
 
                         File.Delete(userFile);
                         File.WriteAllText(userFile + ".encrypted", encrypted);
+                        Console.WriteLine("File successfully encrypted " + userFile + ".encrypted");
                         break;
                     case UserCommand.Decrypt:
                         userFile = GetUserFile(".encrypted");
@@ -50,6 +60,7 @@ namespace ScytherEncryption
                         string txtFileName = Path.GetFileNameWithoutExtension(userFile);
                         userFile = Path.Combine(Path.GetDirectoryName(userFile), txtFileName);
                         File.WriteAllText(userFile, plainText);
+                        Console.WriteLine("File successfully decrypted " + userFile);
                         break;
                     case UserCommand.Help:
                         PrintHelp();
@@ -64,6 +75,7 @@ namespace ScytherEncryption
             }
         }
 
+        //Tells the console to repeat last steps so that the console doesn't close after the user does one command
         static UserCommand GetUserCommand()
         {
             string userInput = Console.ReadLine();
@@ -87,6 +99,7 @@ namespace ScytherEncryption
             return UserCommand.Unknown;
         }
 
+        //Tells user what do do if they type help
         static void PrintHelp()
         {
             Console.WriteLine("Commands:");
@@ -96,6 +109,7 @@ namespace ScytherEncryption
             Console.WriteLine("\tH or HELP to print this message");
         }
 
+        //Tells the user and the console how to type in what file the user wants to encrypt, and tells console what to do if the file was typed in wrong or doesn't exist
         static string GetUserFile(string extension)
         {
             Console.WriteLine("Enter the file path:");
@@ -108,7 +122,7 @@ namespace ScytherEncryption
                 userFile = Console.ReadLine().Trim().Replace("\"", "");
             }
 
-            return userFile;
+           return userFile;
         }
     }
 }

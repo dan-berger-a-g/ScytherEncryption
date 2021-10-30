@@ -21,7 +21,7 @@ namespace ScytherEncryption
         public void TestEncryption()
         {
             string s = "Hello, world!" + Environment.NewLine + "foo line";
-            byte key = 7;
+            byte[] key = new byte[] { 1, 2, 3 };
 
             string encrypted = o.Encypt(s, key);
             Assert.AreNotEqual(s, encrypted);
@@ -33,7 +33,7 @@ namespace ScytherEncryption
 
             for (int i = 0; i < original.Length; i++)
             {
-                Assert.AreEqual(original[i] + 7, encrypted[i], "Problem at index " + i);
+                Assert.AreEqual(original[i] + key[i % key.Length], encrypted[i], "Problem at index " + i);
             }
 
             string plain = o.Decrypt(encrypted, key);
