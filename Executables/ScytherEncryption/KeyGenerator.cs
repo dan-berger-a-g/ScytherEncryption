@@ -49,6 +49,7 @@ namespace ScytherEncryption
         {
             try
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                 File.WriteAllBytes(filePath, key);
                 errorMessage = null;
                 return true;

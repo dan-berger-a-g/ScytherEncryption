@@ -18,4 +18,16 @@
     <ProjectReference Include="..\..\Executables\ScytherEncryption\ScytherEncryption.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\Key.key">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\PlainTextFile.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\PlainTextFile.txt.encrypted">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
